@@ -1,0 +1,43 @@
+Exemple pour le projet = > https://www.
+
+Lister toutesl séries :
+    => titre, nombre de tomes existans, lien pour voir la fiche.
+    => pouvoir chercher les séries selon des mot-clés.
+    => Pouvoir afficher une série au hasard.
+    => ajouter /modifer/supprimer une série.
+
+Sur la fiche d'une série : 
+    => Toutes les infos et tous les albums correspondans 
+    => Ajouter un nouvel albums
+
+sur la fiche d'un albums.
+    => toutes les infos de cet album et de la série liée.
+
+Ajouter les possiblilité d'avoir une cover d'album.
+
+désignation d'un album pour représenter la série.
+    => Par défautl si rien n'est désigner ça sera une image par défautlt.
+
+
+
+Statistique:
+    => Nombre total d'albums 
+    => Nombre total de séries
+    => Nobmre total d'auteurs (avec leur nombre de participation);
+    => Nombre de planches totales.
+
+
+
+    STRUCTURE CODE
+
+    Serie
+        constructors
+        getters
+        setters
+            getBooks: [new books];
+    
+    Book
+        constructors
+        getters
+        setters
+            getSerie : new Serie;

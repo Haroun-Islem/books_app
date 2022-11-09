@@ -84,7 +84,7 @@
                 <input type="hidden" name="id"value="<?= $v->getId();?>">
         </form>
     </td>
-    <td><a href="add_books.php"><button>Ajouter Episode</button></a></td>
+    <td><a href="add_books.php?id=<?php echo $v->getId(); ?>"><button>Ajouter Episode</button></a></td>
 
         </tr>
     </tbody>

@@ -67,12 +67,12 @@
 
     <?php foreach($t as $v): ?>
         <tr>
-            <td><?= $v-> getTitle(); ?></td>
-            <td><?= $v-> getOrigin(); ?></td>
-            <td><?= $v-> getId();?></td>
-            <td><?= $v-> getId(); ?><br>
-                <?= $v-> getCreated(); ?><br>
-                <?= $v-> getUpdated(); ?>
+            <td><?= $v->getTitle(); ?></td>
+            <td><?= $v->getOrigin(); ?></td>
+            <td><?= $v->getId();?></td>
+            <td><?= $v->getId(); ?><br>
+                <?= $v->getCreated(); ?><br>
+                <?= $v->getUpdated(); ?>
         </td>
         
 
@@ -98,7 +98,6 @@ if(!empty($_GET['edit'])){
     ?>
 
 <form action="<?= $_SERVER['PHP_SELF'];?>" method="POST">
-
     <input type="hidden" name="id" value="<?= $o->getId(); ?>">
 
 <p><input type="text" name="title" value="<?= $o->getTitle(); ?>" required></p>

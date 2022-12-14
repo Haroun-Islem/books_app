@@ -1,6 +1,14 @@
 <?php require_once("inc/classes/database.class.php");
       require_once("inc/classes/book.class.php");
       require_once("inc/classes/serie.class.php");
+
+    $co = new Database;
+
+        $query=$co->prepare('SELECT s.title, s.id, b.cover FROM books b INNER JOIN series s ON s.id=b.serie_id');
+        $query->execute();
+        $series = $query->fetchAll(PDO::FETCH_ASSOC);
+
+     
  ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -14,12 +22,15 @@
 
 
 <h3 class="text-center mt-2"></h3>
+<?php foreach($series as $serie):?>
     <div class="container">
-                <img src="asset/images/test1.jpg" class="card-img w-25" alt="...">
+        <?php // var_dump($serie['cover'].'.jpg') ?>
+               <a href="#"><img src="asset/images/<?= $serie['cover'].'.jpg';?>" class="card-img w-25" alt="..."></a>
            
                 </div>
     </div>
 
+<?php endforeach;?>
 <?php include("inc/footer.php"); ?>
 </body>
 </html>

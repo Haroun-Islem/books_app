@@ -132,7 +132,7 @@ public function __construct($d){
 
                 if(empty($this->id)){
 
-                    $n = $this->prepare("INSERT INTO `books` (title,num,scriptwriter,illustrator,editor,releaseyear,strips,cover,serie_id) VALUES (:title, :num,:scriptwriter,:illustrator, :editor,:releaseyear,:strips,:cover,:serie_id)");
+                    $n = $this->prepare("INSERT INTO `books` (title,num,scriptwriter,illustrator,editor,releaseyear,strips,cover,serie_id,rep) VALUES (:title, :num,:scriptwriter,:illustrator, :editor,:releaseyear,:strips,:cover,:serie_id,:rep)");
                    $result= $n->execute([':title' => $this->title,
                                  ':num'=> $this->num,
                                  ':scriptwriter' => $this->scriptwriter,
@@ -141,11 +141,11 @@ public function __construct($d){
                                  ':releaseyear'=> $this->releaseyear,
                                  ':strips'=> $this->strips,
                                  ':cover' => $this->cover,
-                                //  ':rep' => $this->rep,
+                                 ':rep' => $this->rep,
                                 ':serie_id'=> $this->serie_id ]);
                                 var_dump($this);
                 }else{
-                    $n = $this->prepare('UPDATE `books` SET title = :title, num = :num, scriptwriter = :scriptwriter, illustrator = :illustrator, editor = :editor, releaseyear = :releaseyear, strips = :strips, cover = :cover WHERE id =:i');
+                    $n = $this->prepare('UPDATE `books` SET title = :title, num = :num, scriptwriter = :scriptwriter, illustrator = :illustrator, editor = :editor, releaseyear = :releaseyear, strips = :strips, cover = :cover, rep = :rep WHERE id =:i');
                     $n->execute([':title' => $this->title,
                                 ':num'=> $this->num,
                                 ':scriptwriter' => $this->scriptwriter,
@@ -153,8 +153,8 @@ public function __construct($d){
                                 ':editor' => $this->editor,
                                 ':releaseyear'=> $this->releaseyear,
                                 ':strips'=> $this->strips,
-                                ':cover' => $this->cover
-                                //':rep' => $this->rep
+                                ':cover' => $this->cover,
+                                ':rep' => $this->rep
                             ]);
                 }
 

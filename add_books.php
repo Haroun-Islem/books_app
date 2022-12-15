@@ -15,15 +15,22 @@
       if(!empty($_POST) && (isset($_POST['add']) || isset($_POST['edit'])))
       {
 
-        var_dump($_POST);
         $new_livre = new Book($_POST);
         $new_livre->setSerie_Id(@$serie_id);
+
+        var_dump($new_livre->getCover());
+        if($new_livre->getCover() != ''){
+          $new_livre->setRep(true);
+        }
+        else{
+          $new_livre->setRep(false);
+        }
           
             $new_livre->save();
         
         //header('Location:add_books.php?id='.$id);
         
-        var_dump($new);
+        
         
       }
     elseif(!empty($_POST) && isset($_POST['supp']))

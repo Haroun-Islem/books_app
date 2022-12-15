@@ -20,7 +20,7 @@ class Book extends Database {
 
 public function __construct($d){
     parent::__construct();
-
+    
     if(is_array($d)){
         
         $this->hydrate($d);
@@ -34,6 +34,7 @@ public function __construct($d){
             $this->hydrate($r->fetch(PDO::FETCH_ASSOC));
         }
     }
+    
     //si on a un resultat 
 }
             public function setRep($d){
@@ -62,7 +63,7 @@ public function __construct($d){
                 $this->editor = (string) $d;
             }
 
-            public function setIlustrator($d){
+            public function setIllustrator($d){
                 $this->illustrator = (string) $d;
             }
 
@@ -131,8 +132,8 @@ public function __construct($d){
 
                 if(empty($this->id)){
 
-                    $n = $this->prepare("INSERT INTO `books` (title,num,scriptwriter,illustrator,editor,releaseyear,strips,cover,rep) VALUES (:title, :num,:scriptwriter,:illustrator, :editor,:releaseyear,:strips,:cover,:rep);");
-                    $n->execute([':title' => $this->title,
+                    $n = $this->prepare("INSERT INTO `books` (title,num,scriptwriter,illustrator,editor,releaseyear,strips,cover,serie_id) VALUES (:title, :num,:scriptwriter,:illustrator, :editor,:releaseyear,:strips,:cover,:serie_id)");
+                   $result= $n->execute([':title' => $this->title,
                                  ':num'=> $this->num,
                                  ':scriptwriter' => $this->scriptwriter,
                                  ':illustrator' => $this->illustrator,
@@ -140,9 +141,11 @@ public function __construct($d){
                                  ':releaseyear'=> $this->releaseyear,
                                  ':strips'=> $this->strips,
                                  ':cover' => $this->cover,
-                                 ':rep' => $this->rep  ]);
+                                //  ':rep' => $this->rep,
+                                ':serie_id'=> $this->serie_id ]);
+                                var_dump($this);
                 }else{
-                    $n = $this->prepare('UPDATE `books` SET title = :title, num = :num, scriptwriter = :scriptwriter, illustrator = :illustrator, editor = :editor, releaseyear = :releaseyear, strips = :strips, cover = :cover, rep = :rep WHERE id =:i');
+                    $n = $this->prepare('UPDATE `books` SET title = :title, num = :num, scriptwriter = :scriptwriter, illustrator = :illustrator, editor = :editor, releaseyear = :releaseyear, strips = :strips, cover = :cover WHERE id =:i');
                     $n->execute([':title' => $this->title,
                                 ':num'=> $this->num,
                                 ':scriptwriter' => $this->scriptwriter,
@@ -150,8 +153,9 @@ public function __construct($d){
                                 ':editor' => $this->editor,
                                 ':releaseyear'=> $this->releaseyear,
                                 ':strips'=> $this->strips,
-                                ':cover' => $this->cover,
-                                ':rep' => $this->rep]);
+                                ':cover' => $this->cover
+                                //':rep' => $this->rep
+                            ]);
                 }
 
 

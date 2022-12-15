@@ -73,10 +73,13 @@ public function __construct($d){
                 if(empty($this->id)){
 
                     $n = $this->prepare("INSERT INTO `series` (title,origin) VALUES (:title, :origin);");
-                    $n->execute([':title' => $this->title, ':origin'=> $this->origin]);
+                    $n->execute([':title' => $this->title,
+                                 ':origin'=> $this->origin]);
                 }else{
                     $n = $this->prepare('UPDATE `series` SET title = :title, origin = :origin WHERE id =:i');
-                    $n->execute([':title' => $this->title, ':origin'=> $this->origin,':i'=> $this->id]);
+                    $n->execute([':title' => $this->title,
+                                 ':origin'=> $this->origin,
+                                 ':i'=> $this->id]);
                 }
 
             }
@@ -94,12 +97,12 @@ public function __construct($d){
 
             public static function all(){
                 
-                //On crée une isntance de BDD
+                //On crée une instance de BDD
 
                 $sql = new Database();
                 $tALL = [];
 
-                //On recup toutes les lignes 
+                //On récupère toutes les lignes 
                 $r = $sql->prepare('SELECT * FROM `series` ORDER BY title;');
                 $r->execute();
 
@@ -113,4 +116,4 @@ public function __construct($d){
             }
 }
 
-// comlpte contributeur GIT => 
+// compte contributeur GIT => 

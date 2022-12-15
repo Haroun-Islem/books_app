@@ -119,11 +119,73 @@ public function __construct($d){
             public function getEditor(){
                 return $this->editor;
             }
-            public function getIlustrator(){
+            public function getIllustrator(){
                 return $this->illustrator;
             }
             public function getNum(){
                 return $this->num;
+            }
+
+
+            public function save(){
+
+                if(empty($this->id)){
+
+                    $n = $this->prepare("INSERT INTO `books` (title,num,scriptwriter,illustrator,editor,releaseyear,strips,cover,rep) VALUES (:title, :num,:scriptwriter,:illustrator, :editor,:releaseyear,:strips,:cover,:rep);");
+                    $n->execute([':title' => $this->title,
+                                 ':num'=> $this->num,
+                                 ':scriptwriter' => $this->scriptwriter,
+                                 ':illustrator' => $this->illustrator,
+                                 ':editor' => $this->editor,
+                                 ':releaseyear'=> $this->releaseyear,
+                                 ':strips'=> $this->strips,
+                                 ':cover' => $this->cover,
+                                 ':rep' => $this->rep  ]);
+                }else{
+                    $n = $this->prepare('UPDATE `books` SET title = :title, num = :num, scriptwriter = :scriptwriter, illustrator = :illustrator, editor = :editor, releaseyear = :releaseyear, strips = :strips, cover = :cover, rep = :rep WHERE id =:i');
+                    $n->execute([':title' => $this->title,
+                                ':num'=> $this->num,
+                                ':scriptwriter' => $this->scriptwriter,
+                                ':illustrator' => $this->illustrator,
+                                ':editor' => $this->editor,
+                                ':releaseyear'=> $this->releaseyear,
+                                ':strips'=> $this->strips,
+                                ':cover' => $this->cover,
+                                ':rep' => $this->rep]);
+                }
+
+
+                
+
+            }
+
+            public function delete(){
+
+               
+
+                $n = $this->prepare('DELETE FROM `books` WHERE `id`=:id ');
+                $n->execute([':id' => $this->id]);
+            }
+
+
+            public static function all(){
+                
+                //On crée une instance de BDD
+
+                $sql = new Database();
+                $tALL = [];
+
+                //On récupère toutes les lignes 
+                $r = $sql->prepare('SELECT * FROM `books` ORDER BY title;');
+                $r->execute();
+
+                while($one = $r->fetch(PDO::FETCH_ASSOC)){
+
+                    array_push($tALL, new Book($one));
+                }
+
+                return $tALL;
+
             }
 
 }

@@ -1,3 +1,4 @@
+
 <?php require_once("inc/classes/database.class.php");
       require_once("inc/classes/book.class.php");
       require_once("inc/classes/serie.class.php");
@@ -5,20 +6,32 @@
 
       if(isset($_GET['id'])){
         $serie_id = $_GET['id'];
-        var_dump($serie_id);
       }
-      $books = new Book(@$serie_id);
-
       
-     $insertion = false;
+      $insertion = false;
+
+      $serie = new Serie($serie_id);
+      $serie_books = $serie->getTomes();
+
+    //  var_dump($serie);
+
+    //  $tableau = [];
+    //  $db = new Database();
+    //  $requete = $db->prepare("SELECT * FROM `series` WHERE title = 'Speederman'");
+    //  $requete->execute();
+    //  $tableau = $requete->fetch(PDO::FETCH_ASSOC);
+     
+    //   var_dump($tableau);
+    //  $serie2 = new Serie($tableau);
+    //  var_dump($serie2);
+
       
       if(!empty($_POST) && (isset($_POST['add']) || isset($_POST['edit'])))
       {
 
         $new_livre = new Book($_POST);
-        $new_livre->setSerie_Id(@$serie_id);
+        $new_livre->setSerie_Id($serie_id);
 
-        var_dump($new_livre->getCover());
         if($new_livre->getCover() != ''){
           $new_livre->setRep(true);
         }
@@ -26,27 +39,28 @@
           $new_livre->setRep(false);
         }
           
-            $new_livre->save();
-        
-        //header('Location:add_books.php?id='.$id);
-        
-        
-        
+        $etat_insertion = $new_livre->save();
+
+        $insertion = true;
+
       }
     elseif(!empty($_POST) && isset($_POST['supp']))
     {
-        
-        
         $new = new Book($_POST['id']);
-        $new->delete();
-        
-        //header('Location:add_books.php?id='.$id);
-        
+        $new->delete();  
     }
     
-    
-    
+    if(isset($_GET["id"])){
+      if($insertion){
+        if($etat_insertion){
+          header('Location:add_books.php?id='.$serie_id.'&succes=vrai');  
+        }else{
+          header('Location:add_books.php?id='.$serie_id.'&succes=faux');  
+        }
+      }
+  }
  ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -54,12 +68,21 @@
     <?php include("inc/meta.php"); ?>
 </head>
 <body>
-    <?php include("inc/navbar.php");?>
 
-<h1 class="text-center mb-5">Tom pour la collection <?= $books->getTitle(); ?></h1>
+    <?php include("inc/navbar.php");
+    
+    if(isset($_GET["id"]) && isset($_GET["succes"])){
+      if($_GET["succes"] == "vrai"){
+        echo "<p style='color:green;'>Bien joué, ton insertion s'est bien faite en base.</p>";
+      }else{
+        echo "<p style='color:red;'>Ah dommage, ton insertion a échouée.</p>";
+      }
+    }
 
+?>
 
 <div class="container">
+<h1 class="text-center mb-5">Tom pour la collection <?= $serie->getTitle(); ?></h1>
 
 <table class="table">
   <thead>
@@ -79,22 +102,24 @@
     </tr>
   </thead>
   <tbody>
-    
-    <tr>
-      <th scope="row"><?= $books->getId();  ?></th>
-      <td><?= $books->getNum() ?></td>
-      <td><?= $books->getTitle() ?></td>
-      <td><?= $books->getScriptwritter() ?></td>
-      <td><?= $books->getIllustrator()?></td>
-      <td><?= $books->getReleaseyear()?></td>
-      <td><?= $books->getEditor() ?></td>
-      <td><?= $books->getStrips() ?></td>
-      <td><img class="w-25 m-auto"src="asset/images/<?= $books->getCover()?>"></td>
+  <?php 
+    foreach($serie_books as $tome):
+  ?>
+      <tr>
+        <th scope="row"><?= $tome["id"] ?></th>
+        <td><?= $tome["num"] ?></td>
+        <td><?= $tome["title"] ?></td>
+        <td><?= $tome["scriptwriter"]  ?></td>
+        <td><?= $tome["illustrator"] ?></td>
+        <td><?=  $tome["releaseyear"] ?></td>
+        <td><?=  $tome["editor"] ?></td>
+        <td><?=  $tome["strips"] ?></td>
+        <td><img class="w-25 m-auto"src="asset/images/<?= $tome["cover"]?>"></td>
+        <td><a href=""><button>Editer</button></a><button>Supprimer</button></a></td>
 
-      <td><a href=""><button>Editer</button></a><button>Supprimer</button></a></td>
+      </tr>
+  <?php endforeach; ?>
 
-    </tr>
-   
   </tbody>
 </table>
 </div>
@@ -102,7 +127,7 @@
 <p class="text-center mt-5">Ajouter un épisode</p>
 
 <div class="container">
-        <form action="add_books.php?id=<?= $serie_id; ?>" method="POST">
+        <form method="POST">
         <label for="title">Titre</label>
         <p><input type="text" name="title" placeholder="Titre de la série" required></p>
 
@@ -135,7 +160,7 @@
         
 </div>
     <?php include("inc/footer.php");?> 
-    
-
 </body>
 </html>
+
+
